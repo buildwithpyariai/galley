@@ -349,6 +349,9 @@ const WHATSAPP_NUMBER = '7738263272';
     height: 100%;
     object-fit: cover;
     display: block;
+    transform: scale(1.04);
+    opacity: 0;
+    animation: heroImageIn 900ms ease-out 120ms forwards;
   }
 
   .offerings,
@@ -373,6 +376,9 @@ const WHATSAPP_NUMBER = '7738263272';
     font-weight: 600;
     margin-bottom: 1.5rem;
     line-height: 1.2;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroTextIn 700ms ease-out 260ms forwards;
   }
 
   .hero h1 .line2 {
@@ -385,6 +391,41 @@ const WHATSAPP_NUMBER = '7738263272';
     color: var(--color-text-light);
     font-size: 1.1rem;
     max-width: 440px;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: heroTextIn 700ms ease-out 430ms forwards;
+  }
+
+  @keyframes heroImageIn {
+    from {
+      opacity: 0;
+      transform: scale(1.04);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes heroTextIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-image img,
+    .hero h1,
+    .hero-content p {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
   }
 
   .offerings {
