@@ -1,0 +1,74 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = 'Galley', description = "I'm Gal E, your coffee co-pilot. Let's embark on a flavour voyage together!" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#000000" />
+    <meta property="og:title" content="Galley" />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content="https://galley.in/" />
+    <meta property="og:image" content="https://galley.in/images/logo.jpeg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="https://galley.in/images/logo.jpeg" />
+    <link rel="icon" type="image/webp" href="/images/logo.webp" />
+    <link rel="canonical" href="https://galley.in/" />
+    <title>{title}</title>
+    <link rel="preload" href="/images/image1.webp" as="image" />
+    <link rel="preload" href="/images/logo.webp" as="image" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --color-black: #000000;
+    --color-dark: #1c1c1c;
+    --color-brown: #8b5e4c;
+    --color-brown-light: #b08d7b;
+    --color-red-brown: #7c4b3f;
+    --color-logo-bg: #ecd0c9;
+    --color-white: #ffffff;
+    --color-text-light: #e8e8e8;
+    --font-display: 'Cormorant Garamond', Georgia, serif;
+    --font-body: 'Inter', system-ui, sans-serif;
+    --font-logo: 'Dancing Script', cursive;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-dark);
+    color: var(--color-white);
+    line-height: 1.6;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+  }
+</style>
