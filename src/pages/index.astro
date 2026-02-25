@@ -73,8 +73,9 @@ const WHATSAPP_NUMBER = '7738263272';
       <div class="contact-grid">
         <div class="contact-form-wrap">
           <h3>Send your queries here!</h3>
-          <form class="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you">
+          <form class="contact-form" name="contact" method="POST" enctype="multipart/form-data" accept-charset="UTF-8" data-netlify="true" netlify-honeypot="bot-field" action="/thank-you/">
             <input type="hidden" name="form-name" value="contact" />
+            <input type="hidden" name="reply_to" value="" />
             <p class="visually-hidden">
               <label>Do not fill this field if you're human: <input name="bot-field" /></label>
             </p>
@@ -88,6 +89,8 @@ const WHATSAPP_NUMBER = '7738263272';
             <input id="attachments" class="file-input" name="attachments" type="file" multiple />
             <span class="attachments" aria-live="polite">Attachments (0)</span>
             <button type="submit" class="send-btn">SEND</button>
+            <p class="form-status" role="status" aria-live="polite" hidden></p>
+            <button type="button" class="another-query-btn" hidden>Have another query? Fill it again</button>
           </form>
           <p class="recaptcha">This site is protected by reCAPTCHA and the Google <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms of Service</a> apply.</p>
         </div>
@@ -154,6 +157,76 @@ const WHATSAPP_NUMBER = '7738263272';
     };
     input.addEventListener('change', renderCount);
     renderCount();
+  })();
+
+  (function() {
+    const form = document.querySelector('.contact-form');
+    if (!(form instanceof HTMLFormElement)) return;
+
+    const sendBtn = form.querySelector('.send-btn');
+    const status = form.querySelector('.form-status');
+    const anotherBtn = form.querySelector('.another-query-btn');
+    const nameInput = form.querySelector('#name');
+    const emailInput = form.querySelector('#email');
+    const attachmentsInput = form.querySelector('#attachments');
+    const attachmentsCount = form.querySelector('.attachments');
+    const defaultBtnText = sendBtn instanceof HTMLButtonElement ? sendBtn.textContent || 'SEND' : 'SEND';
+
+    const setStatus = (message) => {
+      if (!status) return;
+      status.textContent = message;
+      status.hidden = !message;
+    };
+
+    const renderAttachmentCount = () => {
+      if (!(attachmentsInput instanceof HTMLInputElement) || !attachmentsCount) return;
+      const total = attachmentsInput.files ? attachmentsInput.files.length : 0;
+      attachmentsCount.textContent = `Attachments (${total})`;
+    };
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!(sendBtn instanceof HTMLButtonElement)) return;
+      sendBtn.disabled = true;
+      sendBtn.textContent = 'SENDING...';
+      setStatus('Sending your query...');
+      if (anotherBtn instanceof HTMLButtonElement) anotherBtn.hidden = true;
+
+      try {
+        const formData = new FormData(form);
+        if (!formData.get('form-name')) formData.set('form-name', 'contact');
+        if (emailInput instanceof HTMLInputElement && emailInput.value) {
+          formData.set('reply_to', emailInput.value.trim());
+        }
+
+        const response = await fetch('/', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!response.ok) throw new Error('Form submission failed');
+
+        form.reset();
+        renderAttachmentCount();
+        setStatus('Thank you! Your query was sent successfully.');
+        if (anotherBtn instanceof HTMLButtonElement) anotherBtn.hidden = false;
+      } catch (error) {
+        setStatus('Something went wrong. Please try again.');
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.textContent = defaultBtnText;
+      }
+    });
+
+    if (anotherBtn instanceof HTMLButtonElement) {
+      anotherBtn.addEventListener('click', () => {
+        form.reset();
+        renderAttachmentCount();
+        setStatus('');
+        anotherBtn.hidden = true;
+        if (nameInput instanceof HTMLElement) nameInput.focus();
+      });
+    }
   })();
 </script>
 
@@ -498,6 +571,33 @@ const WHATSAPP_NUMBER = '7738263272';
 
   .send-btn:hover {
     background: var(--color-text-light);
+  }
+
+  .send-btn:disabled {
+    opacity: 0.75;
+    cursor: wait;
+  }
+
+  .form-status {
+    margin-top: 0.9rem;
+    color: var(--color-text-light);
+    font-size: 0.95rem;
+  }
+
+  .another-query-btn {
+    margin-top: 0.85rem;
+    width: 100%;
+    padding: 0.85rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    background: transparent;
+    color: var(--color-white);
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+
+  .another-query-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .recaptcha {
