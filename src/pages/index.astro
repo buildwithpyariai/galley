@@ -1,5 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import { Image } from 'astro:assets';
+import logoImage from '../assets/images/logo.webp';
+import heroImage from '../assets/images/image1.webp';
+import storyImage1 from '../assets/images/image2.webp';
+import storyImage2 from '../assets/images/image3.webp';
+import machineImage from '../assets/images/image4.webp';
 
 // WhatsApp Click to Chat: country code + number, no spaces or + (e.g. 919876543210 for India)
 const WHATSAPP_NUMBER = '7738263272';
@@ -9,7 +15,7 @@ const WHATSAPP_NUMBER = '7738263272';
   <header class="header">
     <nav class="nav">
       <a href="/" class="logo-wrap">
-        <img src="/images/logo.webp" alt="Galley" class="logo" width="96" height="96" fetchpriority="high" decoding="async" />
+        <Image src={logoImage} alt="Galley" class="logo" width={96} height={96} densities={[1, 2, 3]} loading="eager" fetchpriority="high" />
       </a>
       <div class="nav-links">
         <a href="/" class="active">HOME</a>
@@ -22,7 +28,16 @@ const WHATSAPP_NUMBER = '7738263272';
   <main>
     <section class="hero">
       <div class="hero-image">
-        <img src="/images/image1.webp" alt="Coffee beans on dark surface with wooden scoop" width="800" height="600" fetchpriority="high" decoding="async" />
+        <Image
+          src={heroImage}
+          alt="Coffee beans on dark surface with wooden scoop"
+          width={1280}
+          height={853}
+          widths={[640, 960, 1280]}
+          sizes="(max-width: 768px) 100vw, 50vw"
+          fetchpriority="high"
+          loading="eager"
+        />
       </div>
       <div class="hero-content">
         <h1><span class="line1">Welcome aboard</span><span class="line2">Galley!</span></h1>
@@ -48,7 +63,15 @@ const WHATSAPP_NUMBER = '7738263272';
     <section class="gal-e-section">
       <h2>This is how I, Gal E look like!</h2>
       <div class="gal-e-image">
-        <img src="/images/image4.webp" alt="Gal E - Coffee vending machine" width="480" height="640" loading="lazy" decoding="async" />
+        <Image
+          src={machineImage}
+          alt="Gal E - Coffee vending machine"
+          width={480}
+          height={640}
+          widths={[320, 480, 720]}
+          sizes="(max-width: 768px) 90vw, 480px"
+          loading="lazy"
+        />
       </div>
     </section>
 
@@ -56,12 +79,28 @@ const WHATSAPP_NUMBER = '7738263272';
       <h2>Our Story</h2>
       <div class="story-grid">
         <div class="story-card">
-          <img src="/images/image2.webp" alt="Coffee cups - espresso, latte, cappuccino" width="400" height="280" loading="lazy" decoding="async" />
+          <Image
+            src={storyImage1}
+            alt="Coffee cups - espresso, latte, cappuccino"
+            width={400}
+            height={280}
+            widths={[420, 700, 1000]}
+            sizes="(max-width: 768px) 92vw, 44vw"
+            loading="lazy"
+          />
           <h3>The Beginning</h3>
           <p>In 2024, Galley was born from the shared vision of Rishwa and Chandra Pratap Pal. Fueled by their love for exceptional taste and delectable cuisine, they embarked on a mission to bring quality and affordability to travellers and adventurers alike. Their goal? To offer a swift, hassle-free, and budget-friendly experience, ensuring every explorer savours their favourite beverages without compromising on luxury or convenience.</p>
         </div>
         <div class="story-card">
-          <img src="/images/image3.webp" alt="Global connectivity - Galley vision" width="400" height="280" loading="lazy" decoding="async" />
+          <Image
+            src={storyImage2}
+            alt="Global connectivity - Galley vision"
+            width={400}
+            height={280}
+            widths={[420, 700, 1000]}
+            sizes="(max-width: 768px) 92vw, 44vw"
+            loading="lazy"
+          />
           <h3>The Vision</h3>
           <p>Galley envisions itself as the global leader in convenient, high-quality, and affordable taste experiences. By diversifying our offerings, expanding digitally, and entering international markets, we aim to redefine the beverage industry with a focus on sustainability and exceeding customer expectations every step of the way. With a commitment to omnipresence, Galley seeks to be there for taste lovers wherever they may be.</p>
         </div>
